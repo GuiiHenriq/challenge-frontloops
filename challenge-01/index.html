@@ -1,176 +1,132 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Segmented control</title>
+    <link rel="stylesheet" href="styles.css" />
     <style>
-    	body {
-    		overflow: hidden;
-    		width: 100%;
-    		height: 100vh;
-    		background: #82b9f9;
-    		display: flex;
-    		align-content: center;
-    		align-items: center;
-    		justify-content: center;
-    	}
-    	
-    	section {
-    		display: flex;
-    		flex-direction: row;
-    		background: #fff;
-    		padding: 15px;
-    		border-radius: 5px;
-    		border: 2px solid #ccc;
-    		margin: 0;
-    	}
+    body {
+    background: #74b9ff;
+    font-size: 14px;
+}
 
-    	button {
-    		background: #fff;
-    		padding: 15px 20px;
-    		font-weight: bold;
-    		font-size: 16px;
-    		cursor: pointer;
-    	}
-		
-		#btn-1 {
-			border: 2px solid #6497f8;
-			border-right: none;
-			border-top-left-radius: 5px;
-			border-bottom-left-radius: 5px;
-		}
+.container {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    border: 1px solid #dedede;
+    background: #fff;
+    border-radius: 4px;
+    width: 400px;
+    margin: 100px auto 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
 
-		#btn-2 {
-			border: 2px solid #6497f8;
-			border-right: none;
-		}
+.segmented-control__button {
+    border: 2px solid #5896ff;
+    border-left: 0;
+    padding: 10px;
+    position: relative;
+    cursor: pointer;
+    background: #fff;
+}
 
-		#btn-3 {
-			border: 2px solid #6497f8;
-			border-top-right-radius: 5px;
-			border-bottom-right-radius: 5px;
-		}
-		
-		button:hover {
-			background: #e2e8f3;
-		}
+.segmented-control__button:hover {
+    background: rgba(88, 150, 225, 0.2)
+}
 
-    	.ativo {
-			background: #6497f8;
-			color: #fff;
-    	}
+.segmented-control__button:first-child {
+    border-left: 2px solid #5896ff;
+    border-radius: 4px 0 0 4px;
+}
 
-    	button.ativo:hover {
-			background: #6497f8;
-			color: #fff;
-    	}
+.segmented-control__button:last-child {
+    border-radius: 0 4px 4px 0;
+}
 
-    	select {
-    		width: 250px;
-    		padding: 10px 0;
-    		border: 2px solid #6497f8;
-    		border-radius: 5px;
-    	}
-    	option {
-    		font-size: 18px;
-    	}
+.segmented-control__button--active,
+.segmented-control__button--active:hover {
+    background: #5896ff;
+    color: #fff;
+}
+
+.segmented-control__select {
+    width: 100%;
+    border: 2px solid #5896ff;
+    background: transparent;
+    height: 36px;
+    display: none;
+}
+
+.segmented-control__button:focus,
+.segmented-control__select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(88, 150, 225, 0.4);
+    z-index: 2;
+}
+
+@media screen and (max-width: 576px) {
+    .segmented-control__row {
+        display: none;
+    }
+
+    .segmented-control__select {
+        display: block;
+    }
+}
     </style>
 </head>
 <body>
-    <!--
-        Create a segmented control that turns into a <select> for mobile screens.
-        They should sync whenever any of them is changed.
-    -->
-    <section>
-	    <div>
-		  <button id="btn-1">Sort by price</button>
-		</div>
+    <div class="container">
+        <div class="segmented-control js-segmented-control">
+            <div class="segmented-control__row">
+                <button class="segmented-control__button segmented-control__button--active js-segmented-control__button" data-value="1">Sort by price</button><!--
+                --><button class="segmented-control__button js-segmented-control__button" data-value="2">Sort by name</button><!--
+                --><button class="segmented-control__button js-segmented-control__button" data-value="3">Sort by relevance</button>
+            </div>
 
+            <select class="segmented-control__select js-segmented-control__select">
+                <option value="1">Sort by price</option>
+                <option value="2">Sort by name</option>
+                <option value="3">Sort by relevance</option>
+            </select>
+        </div>
+    </div>
 
-		<div>
-		  <button id="btn-2">Sort by name</button>
-		</div>
+  
+    <script>
+        (function() {
+            const modifiers = {
+                buttonActive: 'segmented-control__button--active'
+            };
 
-		<div>
-		  <button id="btn-3">Sort by relevance</button>
-		</div>
-	</section>
+            const attributes = {
+                value: 'data-value'
+            };
 
-	<section>
-		<div>
-			<select id="select" name="select" form="select">
-			  <option value="sort-by-price">Sort by price</option>
-			  <option value="sort-by-name">Sort by name</option>
-			  <option value="sort-by-relevance">Sort by relevance</option>
-			</select>
-		</div>
-	</section>
+            const elRoot = document.querySelector('.js-segmented-control');
+            const elsButton = elRoot.querySelectorAll('.js-segmented-control__button');
+            const elSelect = elRoot.querySelector('.js-segmented-control__select');
 
-<script>
-	/* FORMA RECOMENDADA
-	var btn = document.querySelectorAll('button');
- 
-	var logButtonIndex = function(buttonIndex) {
-  		btn[buttonIndex].classList.toggle('ativo');
-	}
- 
+            const chooseButton = elButton => {
+                elsButton.forEach(el => el.classList.remove(modifiers.buttonActive));
+                elButton.classList.add(modifiers.buttonActive);
+            };
 
-	btn.forEach(function(button, index) {
-		button.addEventListener('click', function() {
-	    	logButtonIndex(index);
-	  	});
-	});
+            elsButton.forEach(el => {
+                el.addEventListener('click', event => {
+                    event.preventDefault();
+                    chooseButton(el);
+                    elSelect.value = el.getAttribute(attributes.value);
+                });
+            });
+            elSelect.addEventListener('change', event => {
+                const buttons = [].slice.call(elsButton, 0);
+                const targetButton = buttons.find(el => {
+                    return event.target.value === el.getAttribute(attributes.value);
+                });
 
-	if(Array.from(btn[0].classList).includes('ativo')) {
-		btn.forEach(function(button, index) {
-		button.removeEventListener('click', function() {
-	    	logButtonIndex(index);
-	  	});
-	});
-		btn[1].classList.remove('ativo');
-		btn[2].classList.remove('ativo');
-	}*/
-
-
-		const btn1 = document.querySelector('#btn-1');
-		const btn2 = document.querySelector('#btn-2');
-		const btn3 = document.querySelector('#btn-3');
-
-		function showActive1() {
-			btn1.classList.add('ativo');
-			btn2.classList.remove('ativo');
-			btn3.classList.remove('ativo');
-		}
-
-		function showActive2() {
-			btn2.classList.add('ativo');
-			btn1.classList.remove('ativo');
-			btn3.classList.remove('ativo');
-		}
-
-		function showActive3() {
-			btn3.classList.add('ativo');
-			btn1.classList.remove('ativo');
-			btn2.classList.remove('ativo');
-		}
-
-		btn1.addEventListener('click', showActive1);
-		btn2.addEventListener('click', showActive2);
-		btn3.addEventListener('click', showActive3);
-
-		
-		const option1 = document.querySelector('option[value="sort-by-price"]');
-		const option2 = document.querySelector('option[value="sort-by-name"]');
-		const option3 = document.querySelector('option[value="sort-by-relevance"]');
-
-		function alertar() {
-			console.log('foi')
-		}
-
-		option3.addEventListener('change', alertar);
-
-</script>
+                chooseButton(targetButton);
+            });
+        })();
+    </script>
 </body>
 </html>
