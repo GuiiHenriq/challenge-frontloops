@@ -81,6 +81,10 @@
 	input, span {
 		flex-direction: column;
 	}
+
+	.inputs {
+		margin-top: 30px;
+	}
 </style>
 </head>
 <body>
@@ -90,51 +94,66 @@
     -->
 
     <label class="switch">
-	  <input type="checkbox" class="selecionado">
-	  <span class="slider round"></span>
-	</label>
+			<input type="checkbox" class="change-bg selecionado">
+			<span class="slider round"></span>
+		</label>
 
-	<section>
+	<section class="inputs">
 		<label class="switch"><input type="checkbox" id="input1"><span class="slider round"></span></label>
 
 		<label class="switch"><input type="checkbox" id="input2"><span class="slider round"></span></label>
 		
 		<label class="switch"><input type="checkbox" id="input3"><span class="slider round"></span></label>
 
-		<label class="switch"><input type="checkbox" id="input4" class="selecionado"><span class="slider round"></span></label>
+		<label class="switch"><input type="checkbox" id="input4"><span class="slider round"></span></label>
 
 		<label class="switch"><input type="checkbox" id="input5"><span class="slider round"></span></label>
 	</section>
 
 <script>
-	const input = document.querySelector('input');
+	const inputChangeBg = document.querySelector('.change-bg');
 	const body = document.querySelector('body');
 
  	function changeColor() {
- 		if(!Array.from(input.classList).includes('active')) {
-	 		input.classList.add('active');
+ 		if(!Array.from(inputChangeBg.classList).includes('active')) {
+			inputChangeBg.classList.add('active');
 	 		body.style.backgroundColor = '#333';
 	 	} else {
-	 		input.classList.remove('active');
+			inputChangeBg.classList.remove('active');
  			body.style.backgroundColor = '#82b9f9';
 	 	}
  	}
+	 inputChangeBg.addEventListener('click', changeColor);
 
- 	input.addEventListener('click', changeColor)
 
- 	const input1 = document.querySelector('#input1');
- 	const input2 = document.querySelector('#input2');
- 	const input3 = document.querySelector('#input3');
- 	const input4 = document.querySelector('#input4');
- 	const input5 = document.querySelector('#input5');
+	 const inputs = document.querySelectorAll('.inputs label input')
+	 let logButtonIndex = function(buttonIndex) {
+  	inputs.forEach(function (tile) {
+			tile.classList.toggle('selecionado');
+		});
+	}
+ 
+	inputs.forEach(function(button, index) {
+  button.addEventListener('click', function() {
+    logButtonIndex(index);
+  });
+});
 
- 	function activeSwitch1(el) {
- 		input1.classList.add('selecionado');
- 		input3.classList.add('selecionado');
- 		input3.click();
- 	}
-	 
- 	input1.addEventListener('click', activeSwitch1);
+	 /*const inputs = document.querySelectorAll('.inputs label');
+	 const fromArray = Array.from(inputs);
+	 function changeSwitch(event) {
+		fromArray[event].click();
+	 }
+
+	 function changeSwitchTeste(el) {
+		this.classList.add('selecionado');
+	 }
+
+	 for (var i = 0; i < inputs; i++) {
+		 inputs[i].addEventListener('scroll', changeSwitchTeste);
+	 }
+
+	 console.log(changeSwitch(1));*/
 </script>
 </body>
 </html>
