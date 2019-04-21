@@ -1,0 +1,230 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Progress navigation</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #8e44ad;
+            overflow: hidden;
+    		width: 100%;
+    		height: 100vh;
+    		display: flex;
+    		align-content: center;
+    		align-items: center;
+    		justify-content: center;
+    		flex-direction: column;
+        }
+
+        section {
+            background: #fff;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            padding: 30px;
+            display: flex;
+            width: 600px;
+            x
+        }
+
+        .number {
+            cursor: pointer;
+        }
+
+        .number h1 {
+            width: 30px;
+            height: 30px;
+            background: #ecf0f1;
+            border-radius: 50%;
+            text-align: center;
+            padding-top: 3px;
+            color: #7f8c8d;
+            display: inline-block;
+            margin: 0;
+        }
+
+        .number p {
+            font-size: 1.125em;
+            color: #7f8c8d;
+            display: inline-block;
+            margin: 25px 0 0 0;
+        }
+
+        .number.active h1 {
+            background: #2980b9;
+            color: #fff;
+        }
+
+        .number.active p {
+            color: #000;
+            font-weight: bold;
+        }
+
+        .content {
+            width: 395px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .content div {
+            display: none;
+        }
+
+        .content div.active {
+            display: block;
+        }
+
+        button {
+            border: none;
+            background: #ecf0f1;
+            padding: 15px 10px;
+            font-size: 17px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <!--
+        Create a progress navigation with previous/next buttons on each step and an overview of all steps.
+        Clicking next button on last step should bring the final screen
+        Steps in overview should be also clickable and change current step to the one click,
+        however you shouldn't be able to skip the next step, so if you're at 1 step - you can't go directly to 3.
+    -->
+
+    <section>
+        <div class="list">
+            <div class="number active" id="list-1">
+                <h1>1</h1>
+                <p>Choose title</p>
+            </div>
+            <div class="number" id="list-2">
+                <h1>2</h1>
+                <p>Choose description</p>
+            </div>
+            <div class="number" id="list-3">
+                <h1>3</h1>
+                <p>Confirm data</p>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="active" id="item-1">
+                <p>Choose title content</p>
+                <button class="next">Submit title</button>
+            </div>
+
+            <div id="item-2">
+                <p>Choose description content</p>
+                <button class="back">Back</button>
+                <button class="next">Submit description</button>
+            </div>
+
+            <div id="item-3">
+                <p>Are you happy now?</p>
+                <button class="back">No, go back</button>
+                <button class="next">Yes, go ahead</button>
+            </div>
+        </div>
+    </section>
+    <script>
+        const listOneNext = document.querySelector('#item-1 .next');
+        const listTwoNext = document.querySelector('#item-2 .next');
+        const listTwoBack = document.querySelector('#item-2 .back');
+        const listThreeNext = document.querySelector('#item-3 .next');
+        const listThreeBack = document.querySelector('#item-3 .back');
+
+        const listOne = document.querySelector('#list-1');
+        const listTwo = document.querySelector('#list-2');
+        const listThree = document.querySelector('#list-3');
+
+        const contentOne = document.querySelector('#item-1');
+        const contentTwo = document.querySelector('#item-2');
+        const contentThree = document.querySelector('#item-3');
+
+
+        function changeStatusOneList() {
+            listOne.classList.add('active');
+            contentOne.classList.add('active');
+
+            listTwo.classList.remove('active');
+            contentTwo.classList.remove('active');
+
+            listThree.classList.remove('active');
+            contentThree.classList.remove('active');
+        }
+
+        function changeStatusTwoList() {
+            listTwo.classList.add('active');
+            contentTwo.classList.add('active');
+
+            contentOne.classList.remove('active');
+
+            listThree.classList.remove('active');
+            contentThree.classList.remove('active');
+        }
+
+        function changeStatusThreeList() {
+            listThree.classList.add('active');
+            contentThree.classList.add('active');
+
+            contentTwo.classList.remove('active');
+        }
+
+        function changeStatusOneBtn() {
+            listTwo.classList.add('active');
+            contentTwo.classList.add('active');
+
+            contentOne.classList.remove('active');
+
+            listThree.classList.remove('active');
+            contentThree.classList.remove('active');
+        }
+
+        function changeStatusTwoBtnBack() {
+            listOne.classList.add('active');
+            contentOne.classList.add('active');
+
+            listTwo.classList.remove('active');
+            contentTwo.classList.remove('active');
+
+            listThree.classList.remove('active');
+            contentThree.classList.remove('active');
+        }
+
+        function changeStatusTwoBtnNext() {
+            listThree.classList.add('active');
+            contentThree.classList.add('active');
+
+            contentTwo.classList.remove('active');
+        }
+
+        function changeStatusThreeBtnBack() {
+            listTwo.classList.add('active');
+            contentTwo.classList.add('active');
+
+            listOne.classList.add('active');
+
+            listThree.classList.remove('active');
+            contentThree.classList.remove('active');
+        }
+
+        function changeStatusThreeBtnNext() {
+            alert('Success!')
+        }
+
+        listOne.addEventListener('click', changeStatusOneList);
+        listTwo.addEventListener('click', changeStatusTwoList);
+        listThree.addEventListener('click', changeStatusThreeList);
+
+        listOneNext.addEventListener('click', changeStatusOneBtn);
+        listTwoBack.addEventListener('click', changeStatusTwoBtnBack);
+        listTwoNext.addEventListener('click', changeStatusTwoBtnNext);
+        listThreeBack.addEventListener('click', changeStatusThreeBtnBack);
+        listThreeNext.addEventListener('click', changeStatusThreeBtnNext);
+
+    </script>
+</body>
+
+</html>
