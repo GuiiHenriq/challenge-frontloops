@@ -47,12 +47,10 @@
         All the words variants should be set in the javascript code.
     -->
 
-	<h1>We can help you with <span class="text-1">testing 1</span><span class="text-2">testing 2</span><span class="text-3">testing 3</span></h1>
+	<h1>We can help you with <span>Lorem ipsum dolor sit amet...</span></h1>
 
 <script>
-	const titulo1 = document.querySelector('.text-1');
-  const titulo2 = document.querySelector('.text-2');
-  const titulo3 = document.querySelector('.text-3');
+	const titulo = document.querySelector('span');
 
   function textWriter(element) {
     const textoArray = element.innerHTML.split('');
@@ -62,24 +60,10 @@
         element.innerHTML += letra;
       }, 75 * index);
 
-      setTimeout(() => {
-    	element.innerHTML = '';
-      }, 1600 * index);
     });
   }
 
-  setTimeout(() => {
-  	textWriter(titulo1);
-  }, 1600);
-
-   setTimeout(() => {
-  	textWriter(titulo2);
-  }, 2600);
-
-    setTimeout(() => {
-  	textWriter(titulo3);
-  }, 3600);
-
+  textWriter(titulo);
 
 </script>
 </body>
