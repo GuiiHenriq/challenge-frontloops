@@ -47,31 +47,49 @@
         All the words variants should be set in the javascript code.
     -->
 
-	<h1 class="titulo-1">We can help you with <span class="span-1">Lorem ipsum dolor sit amet...</span></h1>
+	<h1 class="titulo-1">We can help you with <span class="span-1">TEXTO 1</span><span class="span-2">TEXTO 2</span></h1>
 
 
 <script>
-	const texto = document.querySelector('span');
+	const texto1 = document.querySelector('.span-1');
+	const texto2 = document.querySelector('.span-2');
 
-
-  function textWriter(element) {
-    const textoArray = element.innerHTML.split('');
-    element.innerHTML = '';
-    textoArray.forEach((letra, index) => {
+  let status = false;
+  function textWriter1() {
+    const texto1Array = texto1.innerHTML.split('');
+    texto1.innerHTML = '';
+    texto2.innerHTML = '';
+    texto1Array.forEach((letra, index) => {
       setTimeout(() => {
-        element.innerHTML += letra;
-				if(element.innerHTML == 'Lorem ipsum dolor sit amet...') {
+        texto1.innerHTML += letra;
+				if(texto1.innerHTML == 'TEXTO 1') {
 					setTimeout(() => {
-						element.innerHTML = '';
-					}, 1010)
+						texto1.innerHTML = ' ';
+            status = true;
+					}, 1000)
 				}
       }, 75 * index);
     });
   }
 
-  textWriter(texto);
+  function textWriter2() {
+    const texto2Array = texto2.innerHTML.split('');
 
+    texto2.innerHTML = '';
+    texto2Array.forEach((letra, index) => {
+      setTimeout(() => {
+        texto2.innerHTML += letra;
+				if(texto2.innerHTML == 'TEXTO 2') {
+					setTimeout(() => {
+						texto2.innerHTML = ' ';
+					}, 1000)
+				}
+      }, 75 * index);
+    });
+  }
 
+  textWriter1();
+  textWriter2();
 
 </script>
 </body>
