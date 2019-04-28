@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Show on scroll</title>
+    <style>
+        body {
+            width: 100%;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background: #fff;
+        }
+
+        div {
+            background: #ecf0f1;
+            width: 800px;
+            height: 400px;
+            margin-top: 30px;
+            opacity: 0;
+        }
+
+        [data-animation] {
+            filter: alpha(opacity=75);
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+            filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=75);
+            opacity: 0;
+            transition: .10s;
+        }
+
+        [data-animation="bottom"] {
+            transform: translate3d(0, 20px, 0);
+        }
+
+        [data-animation].animate {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+    </style>
+</head>
+
+<body>
+    <!--
+        Write a script that tracks whenever elements appears on the screen and makes them visible then
+    -->
+
+    <div></div>
+    <div data-animation="bottom"></div>
+    <div data-animation="bottom"></div>
+    <div data-animation="bottom"></div>
+    <div data-animation="bottom"></div>
+    <div data-animation="bottom"></div>
+    <div data-animation="bottom"></div>
+
+    <script>
+
+        /* Animacoes Scroll */
+        const target = document.querySelectorAll('[data-animation]');
+        const animationClass = 'animate';
+
+        if (window.innerWidth <= 576) {
+            function animeScrollMobile() {
+                const windowTop = window.pageYOffset + ((window.innerHeight * 3) / 5);
+                target.forEach(function (element) {
+                    if (windowTop > element.offsetTop) {
+                        element.classList.add(animationClass);
+                    }
+                });
+            }
+
+            animeScrollMobile();
+
+            if (target.length) {
+                window.addEventListener('scroll', animeScrollMobile);
+            }
+        }
+
+
+        if (window.innerWidth >= 577) {
+            function animeScrollDesktop() {
+                const windowTop = window.pageYOffset;
+                target.forEach(function (element) {
+                    if (windowTop > element.offsetTop - (window.innerHeight / 2.5)) {
+                        element.classList.add(animationClass);
+                    }
+                });
+            }
+
+            animeScrollDesktop();
+
+            if (target.length) {
+                window.addEventListener('scroll', animeScrollDesktop);
+            }
+        }
+
+    </script>
+</body>
+
+</html>
